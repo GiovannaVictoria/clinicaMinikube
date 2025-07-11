@@ -1,0 +1,14 @@
+replicaCount: 1
+
+image:
+  repository: giovannavictoriarossetto/clinica-app
+  tag: "latest"
+  pullPolicy: Always
+
+redis:
+  host: clinica-redis
+  port: 6379
+
+mysql:
+  host: clinica-db
+  port: 3306

@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.global.app.name }}
+  labels:
+    app: {{ .Values.global.app.name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.global.app.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.app.name }}
+    spec:
+      initContainers:
+        - name: wait-for-redis
+          image: busybox:1.35
+          command: ['sh', '-c', 'until nc -z {{ .Values.redis.host }} {{ .Values.redis.port }}; do echo "Esperando Redis..."; sleep 2; done']
+        - name: wait-for-mysql
+          image: busybox:1.35
+          command: ['sh', '-c', 'until nc -z {{ .Values.mysql.host }} {{ .Values.mysql.port }}; do echo "Esperando MySQL..."; sleep 2; done']
+      containers:
+        - name: {{ .Values.global.app.name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-db-configmap
+                  key: db_url
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-db-secret
+                  key: username
+            - name: MYSQL_PASSWORD 
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-db-secret
+                  key: password
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            failureThreshold: 5
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 5
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "1"
+            limits:
+              memory: "2Gi"
+              cpu: "2"

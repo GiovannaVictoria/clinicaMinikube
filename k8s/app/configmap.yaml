@@ -1,0 +1,6 @@
+kind: ConfigMap 
+apiVersion: v1 
+metadata:
+  name: clinica-app-configmap
+data:
+  db-url: jdbc:mysql://clinica-db:3306/ClinicaSpring?createDatabaseIfNotExist=true

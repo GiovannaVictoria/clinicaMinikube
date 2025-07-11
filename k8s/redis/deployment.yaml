@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clinica-redis
+  labels:
+    app: clinica-redis
+spec:
+  selector:
+    matchLabels:
+      app: clinica-redis
+  template:
+    metadata:
+      labels:
+        app: clinica-redis
+    spec:
+      containers:
+        - name: clinica-redis
+          image: giovannavictoriarossetto/clinica-redis:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 6379
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "1"
+            limits:
+              memory: "2Gi"
+              cpu: "2"

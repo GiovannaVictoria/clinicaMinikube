@@ -1,0 +1,14 @@
+apiVersion: v2
+name: clinica
+description: A Helm chart for Clinica application
+type: application
+version: 0.1.0
+appVersion: "1.16.0"
+
+dependencies:
+  - name: "app"
+    version: "0.1.0"
+  - name: "db"
+    version: "0.1.0"
+  - name: "redis"
+    version: "0.1.0"

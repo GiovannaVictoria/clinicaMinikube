@@ -1,0 +1,30 @@
+services:
+  database:
+    build: ./src/main/java/br/ufscar/dc/dsw/dao/
+    networks:
+      - clinica
+    healthcheck:
+      test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 --password="p4sswd2DSW1!" --silent']
+      interval: 3s
+      retries: 5
+      start_period: 30s
+  redis:
+    build: ./redis
+    container_name: redis
+    networks:
+      - clinica
+    restart: always
+  app:
+    build: ./src/main/java/br/ufscar/dc/dsw/
+    networks:
+      - clinica
+    ports:
+      - "8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+networks:
+  clinica:

@@ -1,0 +1,6 @@
+global:
+  app:
+    name: clinica-app
+  
+  redis:
+    name: clinica-redis

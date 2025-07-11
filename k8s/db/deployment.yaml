@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clinica-db
+  labels:
+    app: clinica-db
+spec:
+  selector:
+    matchLabels:
+      app: clinica-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: clinica-db
+    spec:
+      containers:
+      - name: clinica-db
+        image: giovannavictoriarossetto/clinica-db:latest
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 3306
+        env:
+          - name: MYSQL_ROOT_PASSWORD 
+            valueFrom:
+              secretKeyRef:
+                name: clinica-db-secret
+                key: password
+          - name: MYSQL_DATABASE 
+            valueFrom:
+              secretKeyRef:
+                name: clinica-db-secret
+                key: db
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "1"
+          limits:
+            memory: "2Gi"
+            cpu: "2"
+        volumeMounts:
+          - name: clinica-persistent-storage
+            mountPath: /var/lib/mysql
+      volumes:
+        - name: clinica-persistent-storage
+          persistentVolumeClaim:
+            claimName: clinica-pv-claim

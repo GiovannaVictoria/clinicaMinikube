@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clinica-app
+  labels:
+    app: clinica-app
+spec:
+  selector:
+    matchLabels:
+      app: clinica-app
+  template:
+    metadata:
+      labels:
+        app: clinica-app
+    spec:
+      initContainers:
+        - name: wait-for-redis
+          image: busybox:1.35
+          command: ['sh', '-c', 'until nc -z clinica-redis 6379; do echo "Esperando Redis..."; sleep 2; done']
+        - name: wait-for-mysql
+          image: busybox:1.35
+          command: ['sh', '-c', 'until nc -z clinica-db 3306; do echo "Esperando MySQL..."; sleep 2; done']
+      containers:
+        - name: clinica-app
+          image: giovannavictoriarossetto/clinica-app:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: clinica-app-configmap
+                  key: db-url
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: clinica-db-secret
+                  key: username
+            - name: MYSQL_PASSWORD 
+              valueFrom:
+                secretKeyRef:
+                  name: clinica-db-secret
+                  key: password
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            failureThreshold: 5
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 5
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "1"
+            limits:
+              memory: "2Gi"
+              cpu: "2"

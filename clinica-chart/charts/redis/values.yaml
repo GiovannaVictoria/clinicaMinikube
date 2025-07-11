@@ -1,0 +1,6 @@
+replicaCount: 1
+
+image:
+  repository: giovannavictoriarossetto/clinica-redis
+  tag: "latest"
+  pullPolicy: Always

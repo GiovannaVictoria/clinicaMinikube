@@ -1,0 +1,6 @@
+replicaCount: 1
+
+image:
+  repository: giovannavictoriarossetto/clinica-db
+  tag: "latest"
+  pullPolicy: Always
