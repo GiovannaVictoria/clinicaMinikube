@@ -6,7 +6,7 @@
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 
-Essa aplicação foi desenvolvida para a disciplina de Desenvolvimento de Software para Web 1 (DSW1) da Ufscar. Nessa versão, ele foi organizado em contâineres. O sistema foi construído na arquivetura MVC (Model-View-Controller) e usou as seguintes tecnologias: Spring MVC, Spring Data JPA, Spring Security, Thymeleaf e MySQL no lado do servidor e CSS no lado do cliente.
+Essa aplicação foi desenvolvida para a disciplina de Desenvolvimento de Software para Web 1 (DSW1) da Ufscar. Nessa versão, ele foi organizado em contêineres. O sistema foi construído na arquivetura MVC (Model-View-Controller) e usou as seguintes tecnologias: Spring MVC, Spring Data JPA, Spring Security, Thymeleaf e MySQL no lado do servidor e CSS no lado do cliente.
 
 ## Estrutura de arquivos
 
@@ -26,7 +26,7 @@ Essa aplicação foi desenvolvida para a disciplina de Desenvolvimento de Softwa
 ```
 
 - A pasta ```clinica-chart``` contém todos os artefatos usados pelo Helm;
-- O arquivo ```docker-compose.yml``` contém a orquestração dos contâineres da aplicação;
+- O arquivo ```docker-compose.yml``` contém a orquestração dos contêineres da aplicação;
 - Os arquivos ```.git``` e ```.gitignore``` contém configurações do GitHub;
 - A pasta ```images``` contém as imagens deste README;
 - A pasta ```k8s``` contém todos os artefatos usados pelo minikube fora do Helm;
