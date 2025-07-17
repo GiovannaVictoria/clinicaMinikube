@@ -36,8 +36,9 @@ Essa aplicação foi desenvolvida para a disciplina de Desenvolvimento de Softwa
 - A pasta ```scripts``` contém 4 scripts:
   - deployClinicaK8S.sh: faz o deploy completo da aplicação fora do Helm;
   - deployImagensDockerHub.sh: faz o deploy das imagens no docker hub;
-  - deployImagensLocal.sh: faz o deploy local das imagens dentro do docker do minikube;
   - recompilacao.sh: recompila a aplicação e substitui o antigo arquivo .jar pelo novo gerado;
+  - deployImagensLocal.sh: faz o deploy local das imagens dentro do docker do minikube;
+    > Obs: todas as imagens estâo no Docker Hub, entâo a execução desse script não é necessária;
 - A pasta ```src``` contém todo o código fonte da aplicação;
 - A pasta ```target``` contém os arquivos gerados após a compilação da aplicação.
 
@@ -118,4 +119,4 @@ A aplicação é composta por três contêineres:
 
 ###### Autor: Giovanna Victória Rossetto
 ###### Data de criação: 05/07/2025 - 5 de julho de 2025
-###### Última modificação: 11/07/2025 - 11 de julho de 2025
+###### Última modificação: 17/07/2025 - 17 de julho de 2025
